@@ -52,7 +52,7 @@ def M_step(obs, responsibilities, L):
         weighted_var = np.sum(responsibilities[:, k] * diff ** 2) 
         weighted_sigmas = np.sum(responsibilities[:, k] * obs[:, 1]**2)
         weighted_sigma = np.sum(responsibilities[:, k] * obs[:, 1])
-        a = -3
+        a = -3*N_k[k]
         b = L*weighted_var-(L-1)*weighted_sigma
         c = (L-1)*weighted_sigmas
 
