@@ -1,5 +1,6 @@
-from . import utils
+from . import utils, frechet
 
 __all__ = [
     "utils",
+    "frechet",
 ]

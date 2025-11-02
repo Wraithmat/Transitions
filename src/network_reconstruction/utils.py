@@ -1,6 +1,13 @@
 import numpy as np
 
 def sliding_windows(trajectory, window_size):
+    """Computes sliding window means and covariances for a 1D trajectory.
+    
+    Inputs:
+        trajectory: 1D numpy array of shape (T,) representing the trajectory.
+        window_size: Integer, size of the sliding window.
+    """
+
     assert window_size > 0, "Window size must be positive."
     assert len(trajectory) >= window_size, "Trajectory length must be at least as large as window size."
     assert len(trajectory.shape) == 1, "Trajectory must be a 1D array."
@@ -18,6 +25,15 @@ def sliding_windows(trajectory, window_size):
     return sliding_means_x, covariances
 
 def E_step(obs, mus, sigmas, pis, L):
+    """Expectation step of the EM algorithm for a Gaussian mixture model in the mean-variance space.
+
+    Inputs:
+        obs: array of shape (N, 2) where each row is (mean, variance) observation.
+        mus: array of shape (K,) representing the means of the K Gaussian components.
+        sigmas: array of shape (K,) representing the standard deviations of the K Gaussian components.
+        pis: array of shape (K,) representing the mixture weights of the K Gaussian components.
+        L: Integer, length of the sliding window used to compute the observations.
+    """
     covariance = np.zeros((len(mus), 2, 2))
     for k in range(len(mus)):
         covariance[k,0,0]=sigmas[k]**2/L
@@ -38,6 +54,12 @@ def E_step(obs, mus, sigmas, pis, L):
     return responsibilities
 
 def M_step(obs, responsibilities, L):
+    """Maximization step of the EM algorithm for a Gaussian mixture model in the mean-variance space.
+    Inputs:
+        obs: array of shape (N, 2) where each row is (mean, variance) observation.
+        responsibilities: array of shape (N, K) representing the responsibilities from the E-step.
+        L: Integer, length of the sliding window used to compute the observations.
+    """
     N_k = np.sum(responsibilities, axis=0)
     pis = N_k / obs.shape[0]
 
