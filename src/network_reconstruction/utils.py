@@ -78,7 +78,7 @@ def M_step(obs, responsibilities, L):
         b = L*weighted_var-(L-1)*weighted_sigma
         c = (L-1)*weighted_sigmas
 
-        discriminant = b**2 - 4*a*c
-        sigmas[k] = np.sqrt((-b - np.sqrt(discriminant)) / (2*a))        
+        discriminant = (b/a)**2 - 4*c/a #better numerical stability
+        sigmas[k] = np.sqrt((-b/(2*a) + np.sqrt(discriminant)/2) )    
 
     return mus, sigmas, pis
